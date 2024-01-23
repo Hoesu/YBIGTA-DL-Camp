@@ -20,7 +20,10 @@ class CopyCommand(BaseCommand):
 
         # TODO 6-1: Initialize any additional attributes you may need.
         # Refer to list_command.py, grep_command.py to implement this.
-        # ...
+        self.name = 'cp'
+        self.options = options
+        self.source_dir = self.args[0]
+        self.destination_dir = self.args[1]
 
     def execute(self) -> None:
         """
@@ -33,8 +36,40 @@ class CopyCommand(BaseCommand):
         You may need to handle exceptions and print relevant error messages.
         You may use the file_exists() method to check if the destination file already exists.
         """
-        # Your code here
-        pass
+        try:
+            # if -v is given, print the file transition process.
+            # It does not matter whether the transition was successful.
+            if '-v' in self.options:
+                print("%s: copying '%s' to '%s'" 
+                      %(self.name, self.source_dir, self.destination_dir))
+            
+            # Check if the file exists in the source directory.
+            if not self.file_exists(self.current_path, self.source_dir):
+                raise FileNotFoundError()
+            
+            origin = os.path.join(self.current_path, self.source_dir)
+            target = os.path.join(self.current_path, self.destination_dir)
+            
+            # If -i is given and the file already exists in the destination directory,
+            # provide the overwrite option (y/n).
+            if '-i' in self.options:
+                if self.file_exists(self.destination_dir, self.source_dir):
+                    print("%s: overwrite '%s/%s'? (y/n)"
+                          %(self.name, self.destination_dir, self.source_dir))
+                    
+                    answer = input(">> ")
+                    if answer == "y":
+                        shutil.copy(origin, target)
+                    else:
+                        pass
+                else:
+                    shutil.copy(origin, target)
+            else:
+                shutil.copy(origin, target)
+
+        except FileNotFoundError as e:
+            print("%s: '%s' does not exist."
+                  %(self.name, self.source_dir))
         
 
     def file_exists(self, directory: str, file_name: str) -> bool:

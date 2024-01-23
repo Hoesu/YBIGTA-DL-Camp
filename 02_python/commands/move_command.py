@@ -17,13 +17,10 @@ class MoveCommand(BaseCommand):
         # Override the attributes inherited from BaseCommand
         self.description = 'Move a file or directory to another location'
         self.usage = 'Usage: mv [source] [destination]'
-
-        # TODO 5-1: Initialize any additional attributes you may need.
-        # Refer to list_command.py, grep_command.py to implement this.
         self.name = 'mv'
         self.options = options
-        self.source_path = self.args[0]
-        self.destination_path = self.args[1]
+        self.source_dir = self.args[0]
+        self.destination_dir = self.args[1]
 
     def execute(self) -> None:
         """
@@ -31,28 +28,51 @@ class MoveCommand(BaseCommand):
         Supported options:
             -i: Prompt the user before overwriting an existing file.
             -v: Enable verbose mode (print detailed information)
-        
-        TODO 5-2: Implement the functionality to move a file or directory to another location.
-        You may need to handle exceptions and print relevant error messages.
         """
-        # Your code here
-        
         try:
-            if not self.file_exists(self.current_path, self.source_path):
-                print()
-                
-            if '-i' in self.options and self.file_exists(self.current_path, self.source_path):
-                print()
-                
-            if 
-        
-        except Exception as e:
-            print()
-                
+            # if -v is given, print the file transition process.
+            # It does not matter whether the transition was successful.
+            if '-v' in self.options:
+                print("%s: moving '%s' to '%s'" 
+                      %(self.name, self.source_dir, self.destination_dir))
             
+            # Check if the file exists in the source directory.
+            if not self.file_exists(self.current_path, self.source_dir):
+                raise FileNotFoundError()
             
-        pass
+            origin = os.path.join(self.current_path, self.source_dir)
+            target = os.path.join(self.current_path, self.destination_dir)
+            copy = os.path.join(self.current_path, self.destination_dir, self.source_dir)
+            
+            # If -i is given and the file already exists in the destination directory,
+            # provide the overwrite option (y/n).
+            if '-i' in self.options:
+                if self.file_exists(self.destination_dir, self.source_dir):
+                    print("%s: overwrite '%s/%s'? (y/n)"
+                          %(self.name, self.destination_dir, self.source_dir))
+                
+                    answer = input(">> ")
+                    if answer == "y":
+                        os.remove(copy)
+                        shutil.move(origin, target)
+                    else:
+                        pass
+                else:
+                    shutil.move(origin, target)
+            else:
+                if self.file_exists(self.destination_dir, self.source_dir):
+                    raise FileExistsError()
+                else:
+                    shutil.move(origin, target)
 
+        except FileNotFoundError as e:
+            print("%s: '%s' does not exist."
+                  %(self.name, self.source_dir))
+        except FileExistsError as e:
+            print("%s: cannot move '%s' to '%s': Destination path '%s' already exists."
+                  %(self.name, self.source_dir, self.destination_dir,
+                    os.path.join(self.destination_dir, self.source_dir)
+            ))
     
     def file_exists(self, directory: str, file_name: str) -> bool:
         """
