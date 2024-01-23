@@ -20,7 +20,9 @@ class ChangeDirectoryCommand(BaseCommand):
 
         # TODO 7-1: Initialize any additional attributes you may need.
         # Refer to list_command.py, grep_command.py to implement this.
-        # ...
+        self.name = 'cd'
+        self.options = options
+        self.destination_dir = self.args[0] if self.args else self.current_path
 
     def execute(self) -> None:
         """
@@ -31,5 +33,17 @@ class ChangeDirectoryCommand(BaseCommand):
         TODO 7-2: Implement the functionality to change the current working directory.
         You may need to handle exceptions and print relevant error messages.
         """
-        # Your code here
-        pass
+        try:
+            # if -v is given, print the directory transition process.
+            if '-v' in self.options:
+                print("%s: changing directory to '%s'" %(self.name, self.destination_dir))
+            
+            destination = os.path.join(self.current_path, self.destination_dir)
+            if not os.path.exists(destination):
+                raise FileNotFoundError
+            else:
+                BaseCommand.update_current_path(destination)
+            
+        except FileNotFoundError:
+            print("%s: cannot change directory to '%s': [Errno 2] No such file or directory: '%s'"
+                  %(self.name, self.destination_dir, self.destination_dir))
