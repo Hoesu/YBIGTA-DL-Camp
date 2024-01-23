@@ -11,6 +11,7 @@ f"Command name: {command_name}"
 f"Options: {options}"
 f"Positional args: {positional_args}"
 """
+logger = logging.getLogger(__name__)
 
 class CommandParser:
     """
@@ -56,6 +57,10 @@ class CommandParser:
             print("command_name: ", command_name)
             print("options     : ", options)
             print("args        : ", positional_args)
+            
+        logger.info(f" Command name: {command_name}"
+                    f", Options: {options}"
+                    f", Positional args: {positional_args}")
         
         return {
             'command_name': command_name,

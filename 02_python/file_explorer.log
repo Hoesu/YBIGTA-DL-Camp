@@ -1,0 +1,2 @@
+2024-01-23 23:18:41,982:INFO:__main__:Input command: Namespace(verbose=False, log_path='file_explorer.log')
+2024-01-23 23:19:01,098:INFO:utils.command_parser: Command name: mv, Options: ['-v', '-i'], Positional args: ['utils/hello.py', '../']

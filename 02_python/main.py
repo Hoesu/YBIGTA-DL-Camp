@@ -10,8 +10,12 @@ parser.add_argument("--log_path", type=str, default="file_explorer.log")
 args = parser.parse_args()
 
 # TODO 1-2: Set up logging and initialize the logger object.
+logging.basicConfig(level=logging.INFO, filemode='w', filename=args.log_path,
+                    format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
+logger = logging.getLogger(__name__)
+logger.info(f"Input command: {args}")
 
-command_parser = CommandParser()
+command_parser = CommandParser(args.verbose)
 handler = CommandHandler(command_parser)
 
 while True:
