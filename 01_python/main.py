@@ -5,9 +5,8 @@ from typing import Optional
 
 from YBIGTA.tokenizers import BPETokenizer, WordTokenizer
 
-
 def load_corpus(
-    url: str = "https://huggingface.co/datasets/cnn_dailymail/resolve/main/data/cnn_stories.tgz",
+    url: str = "https://huggingface.co/datasets/cnn_dailymail/resolve/2d2c6100ccd17c0b215f85c38e36c4e7a5746425/data/cnn_stories.tgz",
     dl_name: str = "dataset.tgz",
     text_dir: str = "cnn/stories/",
     n: Optional[int] = None
@@ -33,7 +32,6 @@ if __name__ == "__main__":
     use_bpe = args.use_bpe
     n_corpus = args.n_corpus
     n_iter = args.n_iter
-
     corpus = load_corpus(n=n_corpus)
 
     SelectedTokenizer = BPETokenizer if use_bpe else WordTokenizer
@@ -43,8 +41,8 @@ if __name__ == "__main__":
 
     input_ids = tokenizer.tokenize(
         corpus[:10],
-        padding=True,
-        max_length=1024
+        #padding=True,
+        #max_length=1024
     )
     print(input_ids)
 
