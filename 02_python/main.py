@@ -11,7 +11,6 @@ args = parser.parse_args()
 
 # TODO 1-2: Set up logging and initialize the logger object.
 
-
 command_parser = CommandParser()
 handler = CommandHandler(command_parser)
 

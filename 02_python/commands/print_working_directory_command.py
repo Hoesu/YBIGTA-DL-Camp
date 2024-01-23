@@ -19,7 +19,7 @@ class PrintWorkingDirectoryCommand(BaseCommand):
 
         # TODO 8-1: Initialize any additional attributes you may need.
         # Refer to list_command.py, grep_command.py to implement this.
-        # ...
+        self.name = 'pwd'
 
     def execute(self) -> None:
         """
@@ -30,5 +30,4 @@ class PrintWorkingDirectoryCommand(BaseCommand):
         TODO 8-2: Implement the functionality to print the current working directory.
         No need to handle exceptions.
         """
-        # Your code here
-        pass
+        print(BaseCommand.current_path)

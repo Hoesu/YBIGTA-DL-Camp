@@ -48,8 +48,8 @@ class MoveCommand(BaseCommand):
             # provide the overwrite option (y/n).
             if '-i' in self.options:
                 if self.file_exists(self.destination_dir, self.source_dir):
-                    print("%s: overwrite '%s/%s'? (y/n)"
-                          %(self.name, self.destination_dir, self.source_dir))
+                    print("%s: overwrite '%s'? (y/n)"
+                          %(self.name, self.source_dir))
                 
                     answer = input(">> ")
                     if answer == "y":

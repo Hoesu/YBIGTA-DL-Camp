@@ -42,8 +42,9 @@ class ChangeDirectoryCommand(BaseCommand):
             if not os.path.exists(destination):
                 raise FileNotFoundError
             else:
-                BaseCommand.update_current_path(destination)
-            
+                BaseCommand.update_current_path(self.destination_dir)
+                os.chdir(self.current_path)
+                            
         except FileNotFoundError:
             print("%s: cannot change directory to '%s': [Errno 2] No such file or directory: '%s'"
                   %(self.name, self.destination_dir, self.destination_dir))

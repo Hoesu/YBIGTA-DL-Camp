@@ -49,7 +49,13 @@ class GrepCommand(BaseCommand):
             with open(self.file, 'r') as file:
                 for line_number, line in enumerate(file, start=1):
                     result = pattern.search(line)
-                    print(result)
+                    
+                    if result and "-n" in self.options:
+                        self.print_line(line_number, line, show_line_number = True)
+                    elif result and "-n" not in self.options:
+                        self.print_line(line_number, line, show_line_number = False)
+                    else:
+                        pass
                         
         except FileNotFoundError:
             print(f"grep: {self.file}: No such file or directory")
